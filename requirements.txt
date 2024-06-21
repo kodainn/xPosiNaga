@@ -8,3 +8,9 @@ jinja2==3.0.3
 tweepy
 japanize_matplotlib
 unidic-lite
+mecab-python3
+ipadic
+fugashi
+numpy==1.26.4
+python-dotenv
+bs4

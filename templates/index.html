@@ -3,6 +3,7 @@
   <head>
     <title>感情分析</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="static/js/index.js"></script>
   </head>
   <body>
     <div class="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
@@ -58,12 +59,14 @@
         </div>
         <div class="mt-10">
           <button
-            type="submit"
+            type="button"
+            onclick="sendMessage()"
             class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             感情分析
           </button>
         </div>
+        <div id="messages" />
       </div>
     </div>
   </body>

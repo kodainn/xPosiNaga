@@ -14,3 +14,6 @@ fugashi
 numpy==1.26.4
 python-dotenv
 bs4
+transformers
+torch
+websockets

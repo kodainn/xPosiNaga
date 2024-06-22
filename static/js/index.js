@@ -1,12 +1,14 @@
-var ws = new WebSocket("ws://localhost:8000/ws");
+var ws = new WebSocket("ws://localhost:8000/posinaga");
 
 ws.onmessage = function(event) {
-    var messages = document.getElementById('messages')
-    var message = document.createElement('li')
-    var content = document.createTextNode(event.data)
-    message.appendChild(content)
-    messages.appendChild(message)
+    
 };
-function sendMessage(event) {
-    ws.send("sockets")
+
+function sendSearchReviewPosinaga(event) {
+    const searchText = document.getElementById('search-text').value;
+    const sendMessage = {
+        "action": "start",
+        "search_text": searchText
+    };
+    ws.send(JSON.stringify(sendMessage))
 }

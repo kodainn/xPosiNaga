@@ -7,4 +7,4 @@ class Model:
         self.classifier = pipeline("sentiment-analysis",model=model,tokenizer=tokenizer)
     
     def predict(self, text):
-        return self.classifier(text)
+        return self.classifier(text)[0]['label']

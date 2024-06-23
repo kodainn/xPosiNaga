@@ -101,9 +101,7 @@ ws.onmessage = (event) => {
 
     if(serverMessage["action"] === "start") {
         changeProcessingSpaceMessage('rakuten');
-        changeProcessingSpaceMessage('amazon');
         addSpacePosinaga('rakuten');
-        addSpacePosinaga('amazon');
     }
 
     if(serverMessage["action"] === "processing" && serverMessage["result"] === "positive" && serverMessage["resource"] === "rakuten") {
@@ -114,20 +112,8 @@ ws.onmessage = (event) => {
         incrementCountSpaceNegative("rakuten");
     }
 
-    if(serverMessage["action"] === "processing" && serverMessage["result"] === "positive" && serverMessage["resource"] === "amazon") {
-        incrementCountSpacePositive("amazon");
-    }
-
-    if(serverMessage["action"] === "processing" && serverMessage["result"] === "negative" && serverMessage["resource"] === "amazon") {
-        incrementCountSpaceNegative("amazon");
-    }
-
     if(serverMessage["action"] == "rakuten_end") {
         changeEndSpaceMessage('rakuten');
-    }
-
-    if(serverMessage["action"] == "amazon_end") {
-        changeEndSpaceMessage('amazon');
     }
 
     if(serverMessage["action"] == "end") {

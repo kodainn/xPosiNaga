@@ -69,26 +69,3 @@ async def send_rakuten_review_comment_posinaga(search_text, model, websocket):
     except Exception as e:
         exception_server_message = {"action": "stop", "message": e}
         await websocket.send_json(exception_server_message)
-
-
-async def send_amazon_review_comment_posinaga(search_text, model, websocket):
-    try:
-        review_comments = []
-        product_urls = get_amazon_search_product_urls(search_text)
-        task_list = [ Thread(target=get_amazon_review_comments, args=(url, review_comments, )) for url in product_urls]
-        
-        for task in task_list:
-            task.start()
-        
-        for task in task_list:
-            task.join()
-        
-        for review_comment in review_comments:
-            send_message = {"action": "processing", "resource": "amazon", "result": model.predict(review_comment[:500])}
-            await send_socket_message(websocket, send_message)
-        
-        end_message = {"action": "amazon_end"}
-        await send_socket_message(websocket, end_message)
-    except Exception as e:
-        exception_server_message = {"action": "stop", "message": e}
-        await websocket.send_json(exception_server_message)

@@ -3,9 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from ml.models import Model
 from dotenv import load_dotenv
-from json import dumps, loads
-from asyncio import create_task
-from helper import send_rakuten_review_comment_posinaga, send_amazon_review_comment_posinaga
+from json import loads
+from helper import send_rakuten_review_comment_posinaga
 
 
 
@@ -31,11 +30,7 @@ async def ws(websocket: WebSocket, model = Depends(Model)):
         await websocket.send_json(start_server_message)
         client_message_decode = loads(client_message)
         if client_message_decode["action"] == "start":
-            # send_rakuten_process = create_task(send_rakuten_review_comment_posinaga(client_message_decode["search_text"], model, websocket))
-            send_amazon_process = create_task(send_amazon_review_comment_posinaga(client_message_decode["search_text"], model, websocket))
-            
-            # await send_rakuten_process
-            await send_amazon_process
+            await send_rakuten_review_comment_posinaga(client_message_decode["search_text"], model, websocket)
         
         end_server_message = {"action": "end", "message": ""}
         await websocket.send_json(end_server_message)

@@ -3,9 +3,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from ml.models import Model
 from dotenv import load_dotenv
-import json
-from threading import Thread
-from helper import send_rakuten_review_comment_posinaga
+from json import dumps, loads
+from asyncio import create_task
+from helper import send_rakuten_review_comment_posinaga, send_amazon_review_comment_posinaga
 
 
 
@@ -27,6 +27,17 @@ async def ws(websocket: WebSocket, model = Depends(Model)):
     await websocket.accept()
     while True:
         client_message = await websocket.receive_text()
-        client_message_decode = json.loads(client_message)
+        start_server_message = {"action": "start", "message": ""}
+        await websocket.send_json(start_server_message)
+        client_message_decode = loads(client_message)
         if client_message_decode["action"] == "start":
-            await send_rakuten_review_comment_posinaga(client_message_decode["search_text"], model, websocket)
+            # send_rakuten_process = create_task(send_rakuten_review_comment_posinaga(client_message_decode["search_text"], model, websocket))
+            send_amazon_process = create_task(send_amazon_review_comment_posinaga(client_message_decode["search_text"], model, websocket))
+            
+            # await send_rakuten_process
+            await send_amazon_process
+        
+        end_server_message = {"action": "end", "message": ""}
+        await websocket.send_json(end_server_message)
+        
+                

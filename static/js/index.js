@@ -47,11 +47,11 @@ const addSpacePosinaga = (name) => {
     const posiNagaCount = `
         <div class="flex">
             <input id="${name}-positive-count" type="hidden" value="0" />
-            ポジティブ数:<div id="show-${name}-positive-count">0</div>
+            ポジティブコメント数:<div id="show-${name}-positive-count">0</div>
         </div>
         <div class="flex">
             <input id="${name}-negative-count" type="hidden" value="0" />
-            ネガティブ数:<div id="show-${name}-negative-count">0</div>
+            ネガティブコメント数:<div id="show-${name}-negative-count">0</div>
         </div>`;
         
     document.getElementById(`${name}-spaces-posinaga`).innerHTML = posiNagaCount;

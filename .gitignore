@@ -1,2 +1,4 @@
 venv
 tailwindcss/node_modules
+__pycache__
+ml/__pycache__

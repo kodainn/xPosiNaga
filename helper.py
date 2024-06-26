@@ -60,8 +60,11 @@ async def send_rakuten_review_comment_posinaga(search_text, model, websocket):
         for task in task_list:
             task.join()
         
-        for review_comment in review_comments:
-            send_message = {"action": "processing", "resource": "rakuten", "result": model.predict(review_comment[:500])}
+        send_message = {"action": "start_processing", "result": len(review_comments)}
+        await send_socket_message(websocket, send_message)
+
+        for i in range(len(review_comments)):
+            send_message = {"action": "processing", "number": i + 1, "result": model.predict(review_comments[i][:500])}
             await send_socket_message(websocket, send_message)
         
         end_message = {"action": "rakuten_end"}

@@ -1,3 +1,6 @@
+let TotalCommentCount = 0;
+
+
 const notDisabledSearchButton = () => {
     document.getElementById('search-button').disabled = false;
 }
@@ -94,6 +97,28 @@ const changeEndSpaceMessage = (name) => {
 }
 
 
+const addProgressBar = () => {
+    const html = `
+        <div id="progress-bar" class="w-full bg-gray-200 rounded-full dark:bg-gray-700 mb-6 mt-6">
+            <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: 0%">
+                0%
+            </div>
+        </div>`;
+    
+    document.getElementById("rakuten-spaces-progress-bar").innerHTML = html;
+}
+
+
+const updateProgressBar = (percent) => {
+    const html = `
+        <div class="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full" style="width: ${percent}%">
+            ${percent}%
+        </div>`;
+    
+    document.getElementById("progress-bar").innerHTML = html;
+}
+
+
 const ws = new WebSocket("ws://localhost:8000/posinaga");
 
 ws.onmessage = (event) => {
@@ -102,18 +127,30 @@ ws.onmessage = (event) => {
     if(serverMessage["action"] === "start") {
         changeProcessingSpaceMessage('rakuten');
         addSpacePosinaga('rakuten');
+        addProgressBar();
     }
 
-    if(serverMessage["action"] === "processing" && serverMessage["result"] === "positive" && serverMessage["resource"] === "rakuten") {
+    if(serverMessage["action"] === "start_processing") {
+        TotalCommentCount = parseInt(serverMessage["result"]);
+    }
+
+    if(serverMessage["action"] === "processing" && serverMessage["result"] === "positive") {
         incrementCountSpacePositive("rakuten");
+        const number = serverMessage["number"];
+        const percent = Math.floor(number / TotalCommentCount * 100);
+        updateProgressBar(percent);
     }
 
-    if(serverMessage["action"] === "processing" && serverMessage["result"] === "negative" && serverMessage["resource"] === "rakuten") {
+    if(serverMessage["action"] === "processing" && serverMessage["result"] === "negative") {
         incrementCountSpaceNegative("rakuten");
+        const number = serverMessage["number"];
+        const percent = Math.floor(number / TotalCommentCount * 100);
+        updateProgressBar(percent);
     }
 
     if(serverMessage["action"] == "rakuten_end") {
         changeEndSpaceMessage('rakuten');
+        updateProgressBar(100);
     }
 
     if(serverMessage["action"] == "end") {

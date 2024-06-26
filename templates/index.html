@@ -1,57 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title></title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="static/js/index.js"></script>
-  </head>
-  <body>
-    <div class="p-8">
-      <h1 class="text-4xl font-medium text-gray-700 text-center mt-6">
-        楽天市場の商品検索のポジティブ/ネガティブコメント判定場
-      </h1>
-      <div class="flex justify-center mt-6">
-        <input
-          type="text"
-          id="search-text"
-          style="width: 50%"
-          class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
-          placeholder="検索したいキーワードを入力してください"
-        />
-        <button id="search-button" onclick="searchButtonEvent()">
-        <div id="button-content" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center">
+
+<head>
+  <title></title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="static/js/index.js"></script>
+</head>
+
+<body>
+  <div class="p-8">
+    <h1 class="text-4xl font-medium text-gray-700 text-center mt-6">
+      楽天市場商品検索のポジティブ/ネガティブコメント判定
+    </h1>
+    <div class="flex justify-center mt-6">
+      <input type="text" id="search-text" style="width: 50%"
+        class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
+        placeholder="検索したいキーワードを入力してください" />
+      <button id="search-button" onclick="searchButtonEvent()">
+        <div id="button-content"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center">
           検索
-        </div>  
-        </button>
-      </div>
+        </div>
+      </button>
+    </div>
 
     <div class="flex justify-evenly">
       <div class="p-8">
-        <div
-          class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"
-            />
+        <div class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
           </svg>
         </div>
-        <h2 class="uppercase mt-6 text-indigo-500 font-medium mb-3">楽天市場</h2>
-        <div id="rakuten-spaces">
+          <div id="rakuten-spaces-progress-bar"></div>
           <div id="rakuten-spaces-message" class="font-light text-sm text-gray-500 mb-3">検索ボタンを押したら計測が開始されます。</div>
           <div id="rakuten-spaces-posinaga"></div>
         </div>
       </div>
     </div>
-  </body>
+</body>
+
 </html>
